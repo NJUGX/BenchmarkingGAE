@@ -2,7 +2,7 @@ README
 ===========================
 ****
 ### Author
-Xue Guo
+Xue Guo <br>
 guoxue245@gmail.com
 
 ### Introduction
