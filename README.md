@@ -1,8 +1,9 @@
 README
 ===========================
 ****
-## Author : Xue Guo
-## E-mail : guoxue245@gmail.com
+### Author
+Xue Guo
+guoxue245@gmail.com
 
 ### Introduction
 These code are implemented for conducting a fundamental performance investigation into GAE runtime environments to make narrow while "apple-to-apple" comparisons based on different language runtime. To support such a project, we empirically investigated the free language runtimes (i.e. Java 7, Java 8, Python, Go, and PHP) of GAE standard environment.
