@@ -1,0 +1,5 @@
+cron:
+- description: '30min test jobs'
+  url: /hello
+  schedule: every 30 minutes
+  timezone: UTC
