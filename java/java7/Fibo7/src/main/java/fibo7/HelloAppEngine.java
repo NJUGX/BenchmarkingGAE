@@ -1,0 +1,68 @@
+package fibo7;
+
+import java.io.IOException;
+import java.util.Date;
+
+import javax.servlet.AsyncContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+
+@WebServlet(name = "HelloAppEngine", urlPatterns = { "/hello" }, asyncSupported = true)
+public class HelloAppEngine extends HttpServlet {
+
+	private static long Fibonacci(int n) {
+		long result = 0;
+		if (n == 1 || n == 2)
+			result = 1;
+		else
+			result = Fibonacci(n - 1) + Fibonacci(n - 2);
+		return result;
+	}
+
+	private static long FiboTime(int fiboIndex) {
+		long startTime = 0, endTime = 0, totalTime = 0;
+		startTime = System.nanoTime();
+		long Fibo = Fibonacci(fiboIndex);
+		endTime = System.nanoTime();
+		totalTime = (endTime - startTime)/1000000; 
+		return totalTime;
+	}
+
+	public void dataStore(long totalTime, int fiboIndex) {
+		Entity fiboTime = new Entity("javaFiboTime");
+		fiboTime.setProperty("FiboIndex", fiboIndex);
+		fiboTime.setProperty("Timestamp", new Date());
+		fiboTime.setProperty("Results", totalTime);
+
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		datastore.put(fiboTime);
+	}
+
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+		response.setContentType("text/plain");
+		response.setCharacterEncoding("UTF-8");
+		
+		long totalTime = 0;
+		int fiboIndex = 40; 
+		for (int flag = 1; flag <= 30; flag++) {
+			try {
+				totalTime = FiboTime(fiboIndex);
+				dataStore(totalTime, fiboIndex);
+				Thread.sleep(20000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		response.getWriter().print("doGet enter Success");
+	}
+
+}
